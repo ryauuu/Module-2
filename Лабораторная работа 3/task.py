@@ -2,43 +2,35 @@ class Book:
     """ Базовый класс книги. """
 
     def __init__(self, name: str, author: str):
-        # Инициализация name и author
         self._name = name
         self._author = author
 
     @property
     def name(self):
-        # Свойство для чтения name
         return self._name
 
     @property
     def author(self):
-        # Свойство для чтения author
         return self._author
 
     def __str__(self):
-        # Строковое представление
         return f"Книга {self.name}. Автор {self.author}"
 
     def __repr__(self):
-        # Оф строковое представление
         return f"{self.__class__.__name__}(name={self.name!r}, author={self.author!r})"
+
 
 class PaperBook(Book):
     def __init__(self, name: str, author: str, pages: int):
-        # Вызываем конструктор базового класса
         super().__init__(name, author)
-        # Инициализация pages
         self.pages = pages
 
     @property
     def pages(self):
-        # Свойство для чтения pages
         return self._pages
 
     @pages.setter
     def pages(self, value):
-        # Проверка на тип и значение для pages
         if not isinstance(value, int):
             raise TypeError("Количество страниц должно быть целым числом")
         if value <= 0:
@@ -46,38 +38,36 @@ class PaperBook(Book):
         self._pages = value
 
     def __str__(self):
-        # Строковое представление
-        return f"Книга {self.name}. Автор {self.author}. Количество страниц {self.pages}"
-
-    def __repr__(self):
-        # Оф строковое представление
-        return f"{self.__class__.__name__}(name={self.name!r}, author={self.author!r}, pages={self.pages!r})"
+        return f"Книга {self.name}. Автор {self.author}. Страниц: {self.pages}"
 
 class AudioBook(Book):
     def __init__(self, name: str, author: str, duration: float):
-        # Вызываем конструктор базового класса
         super().__init__(name, author)
-        # Инициализация duration
         self.duration = duration
 
     @property
     def duration(self):
-        # Свойство для чтения duration
         return self._duration
 
     @duration.setter
     def duration(self, value):
-        # Проверка на тип и значение для duration
-        if not isinstance(value, (int, float)):
-            raise TypeError("Продолжительность должна быть числом с плавающей запятой")
+        if not isinstance(value, (float, int)):
+            raise TypeError("Длительность должна быть числом с плавающей запятой")
         if value <= 0:
-            raise ValueError("Продолжительность должна быть положительным числом")
-        self._duration = value
-
-    def __str__(self):
-        # Строковое представление
-        return f"Книга {self.name}. Автор {self.author}. Продолжительность {self.duration} часов"
+            raise ValueError("Длительность должна быть положительным числом")
+        self._duration = float(value)
 
     def __repr__(self):
-        # Оф строковое представление
-        return f"{self.__class__.__name__}(name={self.name!r}, author={self.author!r}, duration={self.duration!r})"
+        return f"{self.__class__.__name__}(name={self.name!r}, author={self.author!r}, duration={self.duration})"
+
+    def __str__(self):
+        return f"Книга {self.name}. Автор {self.author}. Длительность: {self.duration} часов"
+
+if __name__ == "__main__":
+    paper_book = PaperBook(name="Война и мир", author="Л. Н. Толстой", pages=1225)
+    print(paper_book)
+    print(repr(paper_book))
+
+    audio_book = AudioBook(name="Унесённые ветром", author="Маргарет Митчелл", duration=46.8)
+    print(audio_book)
+    print(repr(audio_book))
